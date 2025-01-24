@@ -3,8 +3,8 @@ from odoo import fields, models
 
 class PayslipSafaricomEtResponse(models.Model):
 
-    _name = "payslip.safaricom_et.response"
-    _description = "Safaricom Ethiopia Payslip Integration Response"
+    _name = "payslip.mpesa.safaricom_et.response"
+    _description = "Safaricom Ethiopia M-PESA Payslip Integration Response"
 
     ok_conversation = fields.Char(string="Conversation ID", readonly=True)
 

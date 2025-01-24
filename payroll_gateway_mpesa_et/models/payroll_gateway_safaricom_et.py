@@ -25,7 +25,7 @@ class PayrollGatewaySafaricomEt(models.Model):
         \n* If the gateway should process payslips the status is \'Enabled\'.
         \n* If the gateway should NOT process payslips the status is \'Disabled\'.""",
     )
-
+    
     name = fields.Char(readonly=True, states={"draft": [("readonly", False)]})
 
     api_key = fields.Char(readonly=True, copy=False)
