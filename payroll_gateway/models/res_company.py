@@ -1,18 +1,18 @@
-from odoo import fields, models
+from odoo import fields, models, _
 
 
 class ResCompany(models.Model):
 
     _inherit="res.company"
 
-    # should be in-sync with field in hr.employee -> default_payroll_payment_gateway
-    default_payroll_payment_gateway = fields.Selection(
+    # should be in-sync with field in hr.employee -> payroll_payment_gateway
+    payroll_payment_gateway = fields.Selection(
         selection=[
-                ('none', "None (Cash)"),
+                ('none', _("None")),
         ],
         default='none',
-        config_parameter="payroll.default_payment_gateway",
-        string="Default Payroll Payment Gateway",
+        config_parameter="payroll.payroll_payment_gateway",
+        string="Payroll Payment Gateway",
         help="The payment gateway to use when processing a payslip for payment.",
         tracking=True,
     )

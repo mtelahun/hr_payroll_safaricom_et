@@ -1,54 +1,46 @@
 from base64 import b64encode
 from json import loads
 from requests import codes, request
+from typing import Dict
 
 from odoo import fields, models
 
 
-class PayrollGatewaySafaricomEt(models.Model):
+class PayrollGatewayMpesaEt(models.Model):
 
-    _name = "payroll.gateway.safaricom_et"
-    _description = "Safaricom Ethiopia Payroll Integration"
+    _name = "payroll.gateway.mpesa_et"
+    _description = "Safaricom Ethiopia M-PESA Payroll Integration"
 
-    state = fields.Selection(
-        [
-            ("draft", "Draft"),
-            ("enabled", "Enabled"),
-            ("disabled", "Disabled"),
-        ],
-        string="Status",
-        readonly=True,
+    enabled = fields.Boolean(
         copy=False,
-        default="draft",
         tracking=True,
-        help="""* When the gateway is created the status is \'Draft\'
-        \n* If the gateway should process payslips the status is \'Enabled\'.
-        \n* If the gateway should NOT process payslips the status is \'Disabled\'.""",
+        help="""* If the gateway should process payslips the status should be \'Enabled\'.
+        \n* If the gateway should NOT process payslips the status should be \'Disabled\'.""",
     )
     
-    name = fields.Char(readonly=True, states={"draft": [("readonly", False)]})
+    name = fields.Char(readonly=True, readonly="enabled == true")
 
-    api_key = fields.Char(readonly=True, copy=False)
+    api_key = fields.Char(string="API Key", readonly="enabled == true", copy=False)
 
-    api_secret = fields.Char(readonly=True, copy=False)
+    api_secret = fields.Char(string="API Secret", readonly="enabled == true", copy=False)
 
-    auth_endpoint = fields.Char(name="Authentication Endpoint")
+    auth_endpoint = fields.Char(name="Authentication Endpoint", readonly="enabled == true")
     
-    grant_type = fields.Char(default="client_credentials")
+    grant_type = fields.Char(default="client_credentials", readonly=True)
 
-    payout_endpoint = fields.Char(name="Payout Endpoint")
+    payout_endpoint = fields.Char(name="Payout Endpoint", readonly="enabled == true")
 
-    result_url = fields.Char()
+    result_url = fields.Char(name="Result URL", readonly="enabled == true")
  
-    timeout_url = fields.Char()
+    timeout_url = fields.Char(name="Timeout URL", readonly="enabled == true")
  
-    initiator_name = fields.Char(name="API User")
+    initiator_name = fields.Char(name="API User", readonly="enabled == true")
  
-    security_credential = fields.Char(name="API Password")
+    security_credential = fields.Char(name="API Password", readonly="enabled == true")
  
-    party_a = fields.Char(name="Business Shortcode")
+    party_a = fields.Char(name="Business Shortcode", readonly="enabled == true")
 
-    def authenticate(self) -> dict[str, str]:
+    def authenticate(self) -> Dict[str, str]:
 
         grant_type = "".join("grant_type=", self.grant_type)
         endpoint = "".join(self.auth_endpoint, "?", grant_type)
@@ -61,12 +53,12 @@ class PayrollGatewaySafaricomEt(models.Model):
         else:
             response.raise_for_status()
     
-    def get_authorization(self, auth_response: dict[str, str]) -> str:
+    def get_authorization(self, auth_response: Dict[str, str]) -> str:
         bearer_auth = "".join(auth_response["token_type"]).join(" ").join(auth_response["access_token"])
         
         return bearer_auth
     
-    def payout(self, bearer_auth: str, party_b: str, amount: float, remarks: str) -> dict[str, str]:
+    def payout(self, bearer_auth: str, party_b: str, amount: float, remarks: str) -> Dict[str, str]:
 
         command = "SalaryPayment"
         occasion = "Disbursement"

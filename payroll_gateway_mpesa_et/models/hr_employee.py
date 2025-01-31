@@ -5,9 +5,9 @@ class HrEmployee(models.Model):
 
     _inherit = "hr.employee"
 
-    # should be in-sync with field in res.company -> default_payroll_payment_gateway
-    default_payroll_payment_gateway = fields.Selection(
+    # should be in-sync with field in res.company -> payroll_payment_gateway
+    payroll_payment_gateway = fields.Selection(
         selection_add=[
-                ('mpesa_et', "Safaricom M-PESA (ET)"),
+            ('mpesa_et', "Safaricom M-PESA (ET)"),
         ],
     )

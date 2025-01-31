@@ -1,12 +1,12 @@
 from odoo import fields, models
 
 
-class ResCompany(models.TransientModel):
+class ResCompany(models.Model):
 
     _inherit = "res.company"
 
     # should be in-sync with field in hr.employee -> payroll_payment_gateway
-    default_payroll_payment_gateway = fields.Selection(
+    payroll_payment_gateway = fields.Selection(
         selection_add=[
                 ('mpesa_et', "Safaricom M-PESA (ET)"),
         ],

@@ -1,10 +1,11 @@
 from odoo import fields, models
 
 
-class PayslipSafaricomEtResponse(models.Model):
+class PayslipMpesaEtResponse(models.Model):
 
-    _name = "payslip.mpesa.safaricom_et.response"
+    _name = "payslip.mpesa_et.response"
     _description = "Safaricom Ethiopia M-PESA Payslip Integration Response"
+    _order = "ok_conversation error_request"
 
     ok_conversation = fields.Char(string="Conversation ID", readonly=True)
 
@@ -19,3 +20,5 @@ class PayslipSafaricomEtResponse(models.Model):
     error_code = fields.Char(readonly=True)
 
     error_msg = fields.Char(string="Error Message", readonly=True)
+
+    raw = fields.Text("Raw Response", readonly=True)
