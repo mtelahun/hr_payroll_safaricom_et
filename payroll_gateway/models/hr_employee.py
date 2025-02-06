@@ -14,6 +14,7 @@ class HrEmployee(models.Model):
     payroll_payment_gateway = fields.Selection(
         selection=[
                 ('none', _("None")),
+                ('manual', _("Manual")),
         ],
         default=_get_payroll_payment_gateway,
         string="Payroll Payment Gateway",

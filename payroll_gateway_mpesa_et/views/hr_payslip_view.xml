@@ -12,10 +12,10 @@
             <page name="accounting" position="after">
                 <page name="mpesa_et" string="M-PESA (ET)">
                     <group name="response" string="API Response">
-                        <field name="safaricom_et_payment_response"/>
+                        <field name="mpesa_et_payment_response"/>
                     </group>
                     <group name="result" string="Transaction Result">
-                        <field name="safaricom_et_payment_result"/>
+                        <field name="mpesa_et_payment_result"/>
                     </group>
                 </page>
             </page>

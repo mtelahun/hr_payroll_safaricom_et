@@ -11,3 +11,5 @@ class HrEmployee(models.Model):
             ('mpesa_et', "Safaricom M-PESA (ET)"),
         ],
     )
+
+    mpesa_phone = fields.Text("M-PESA Telephone")

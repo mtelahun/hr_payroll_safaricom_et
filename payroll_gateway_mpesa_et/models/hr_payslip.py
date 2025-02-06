@@ -24,9 +24,9 @@ class HrPayslip(models.Model):
           states={"draft": [("readonly", False)]},
      )
 
-     safaricom_et_payment_response = fields.Many2one("payslip.safaricom_et.response")
+     mpesa_et_payment_response = fields.Many2one("payslip.mpesa_et.response", string="M-Pesa (ET) API Response")
 
-     safaricom_et_payment_result = fields.Many2one("payslip.safaricom_et.result")
+     mpesa_et_payment_result = fields.Many2one("payslip.mpesa_et.result", string="M-Pesa (ET) Transaction Result")
 
      @api.onchange("paid_mpesa")
      def onchange_paid_mpesa(self):
@@ -54,7 +54,27 @@ class HrPayslip(models.Model):
                
           for slip in self:
                if slip.payroll_payment_gateway == 'mpesa_et':
-                    # Gateway
+                    gw = self.env["payroll.gateway.mpesa_et"].search([("enabled", "=", True)]).browse()
+                    if len(gw) == 0:
+                         _logger.warning(
+                              "Unable to find an appropriate M-PESA gateway for payslip %s (%s)",
+                              slip.name,
+                              slip.number
+                         )
+                         continue
+                    authorization = gw[0].get_authorization(gw[0].authenticate())
+                    try:
+                         res = gw[0].payout(authorization, slip.employee_id.mpesa_phone, slip.net_amount, slip.name)
+                    except:
+                         _logger.warning(
+                              "An error occurred during M-PESA payslip payment processing for %s (%s)",
+                              slip.name,
+                              slip.number
+                         )
+                    else:
+                         res = gw[0].translate_payment_response(res)
+                         res["payslip_id"] = slip.id
+                         slip.mpesa_et_payment_response = self.env["payslip.mpesa_et.response"].create(res)
 
 
           return super(HrPayslip, self).action_payslip_payment()

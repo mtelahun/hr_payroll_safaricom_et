@@ -12,7 +12,7 @@ class HrPayslip(models.Model):
     
     state = fields.Selection(
         selection_add=[
-            ("payment", "Payment")
+            ("payment", "Payment"),
             ("done",)
         ],
         help="""* When the payslip is created the status is \'Draft\'
@@ -22,23 +22,23 @@ class HrPayslip(models.Model):
         \n* When user cancel payslip the status is \'Rejected\'.""",
     )
 
+    @api.model
+    def _get_payroll_payment_gateway(self):
+        """ Return the default payment method chosen by the company. """
+        return self.env.company.payroll_payment_gateway
+
      # should be in-sync with field in res.company and hr.employee -> payroll_payment_gateway
     payroll_payment_gateway = fields.Selection(
         selection=[
                 ('none', _("None")),
                 ('manual', _("Manual")),
         ],
-        default="_payroll_payment_gateway",
+        default=_get_payroll_payment_gateway,
         string="Payroll Payment Gateway",
         help="The payment gateway to use when processing the payslip for payment.",
         index=True,
         tracking=True,
     )
-
-    @api.model
-    def _payroll_payment_gateway(self):
-        """ Return the default payment method chosen by the company. """
-        return self.env.company.payroll_payment_gateway
     
     @api.onchange("employee_id")
     def onchange_employee_id(self):

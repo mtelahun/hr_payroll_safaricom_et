@@ -9,7 +9,7 @@ class HrPayslipChangeState(models.TransientModel):
     
     state = fields.Selection(
         selection_add=[
-            ("payment", "Payment")
+            ("payment", "Payment"),
             ("done",)
         ],
         help="""* When the payslip is created the status is \'Draft\'

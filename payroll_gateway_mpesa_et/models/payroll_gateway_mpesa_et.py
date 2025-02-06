@@ -13,12 +13,11 @@ class PayrollGatewayMpesaEt(models.Model):
 
     enabled = fields.Boolean(
         copy=False,
-        tracking=True,
         help="""* If the gateway should process payslips the status should be \'Enabled\'.
         \n* If the gateway should NOT process payslips the status should be \'Disabled\'.""",
     )
     
-    name = fields.Char(readonly=True, readonly="enabled == true")
+    name = fields.Char(readonly="enabled == true")
 
     api_key = fields.Char(string="API Key", readonly="enabled == true", copy=False)
 
@@ -82,3 +81,13 @@ class PayrollGatewayMpesaEt(models.Model):
             return loads(response.json())
         else:
             response.raise_for_status()
+
+    def translate_payment_response(self, response: Dict[str, str]) -> Dict[str, str]:
+
+       return {
+           "ok_conversation": response["ConversationId"],
+           "ok_originator_conversation": response["OriginatorConversationID"],
+           "ok_response_code": response["ResponseCode"],
+           "ok_response_desc": response["ResponseDescription"],
+           "raw": response.__str__
+       }

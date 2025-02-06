@@ -9,10 +9,10 @@ class ResCompany(models.Model):
     payroll_payment_gateway = fields.Selection(
         selection=[
                 ('none', _("None")),
+                ('manual', _("Manual")),
         ],
         default='none',
         config_parameter="payroll.payroll_payment_gateway",
         string="Payroll Payment Gateway",
         help="The payment gateway to use when processing a payslip for payment.",
-        tracking=True,
     )

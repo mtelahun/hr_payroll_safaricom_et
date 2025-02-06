@@ -8,6 +8,7 @@
         Make salary payments through Safaricom Ethiopia's payment gateway.
     """,
     'data': [
+        "views/hr_employee_view.xml",
         "views/hr_payslip_view.xml",
         "views/payroll_gateway_mpesa_et_view.xml"
     ]
