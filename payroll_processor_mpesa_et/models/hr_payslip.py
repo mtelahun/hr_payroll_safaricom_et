@@ -21,7 +21,6 @@ class HrPayslip(models.Model):
           string="M-PESA Payment",
           readonly=True,
           copy=False,
-          states={"draft": [("readonly", False)]},
      )
 
      mpesa_et_payment_response = fields.Many2one("payslip.mpesa_et.response", string="M-Pesa (ET) API Response")

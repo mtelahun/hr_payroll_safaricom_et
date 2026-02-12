@@ -2,7 +2,7 @@
 <odoo>
     <menuitem
         id="payroll_menu_gateways"
-        name="Gateways"
+        name="Processors"
         parent="payroll.payroll_menu_configuration"
         sequence="100"
         groups="payroll.group_payroll_manager"

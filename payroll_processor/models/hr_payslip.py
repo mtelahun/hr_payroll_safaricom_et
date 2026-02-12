@@ -27,22 +27,21 @@ class HrPayslip(models.Model):
         """ Return the default payment method chosen by the company. """
         return self.env.company.payroll_payment_gateway
 
-     # should be in-sync with field in res.company and hr.employee -> payroll_payment_gateway
-    payroll_payment_gateway = fields.Selection(
+     # should be in-sync with field in res.company and hr.employee -> payroll_payment_processor
+    payroll_payment_processor = fields.Selection(
         selection=[
                 ('none', _("None")),
                 ('manual', _("Manual")),
         ],
         default=_get_payroll_payment_gateway,
-        string="Payroll Payment Gateway",
-        help="The payment gateway to use when processing the payslip for payment.",
+        help="The payment processor to use when processing the payslip for payment.",
         index=True,
         tracking=True,
     )
     
     @api.onchange("employee_id")
     def onchange_employee_id(self):
-        self.payroll_payment_gateway = self.employee_id.payroll_payment_gateway
+        self.payroll_payment_processor = self.employee_id.payroll_payment_gateway
 
     def action_payslip_confirm(self):
         if (
