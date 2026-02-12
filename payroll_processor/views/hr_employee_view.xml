@@ -9,7 +9,7 @@
             <xpath expr="//page[@name='public']" position="after">
                 <page name="payroll" string="Payroll" groups="hr.group_hr_user">
                     <group>
-                        <field name="payroll_payment_gateway" />
+                        <field name="payroll_payment_processor" />
                     </group>
                 </page>
             </xpath>

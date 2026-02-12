@@ -7,7 +7,7 @@
         <field name="inherit_id" ref="payroll.hr_payslip_view_tree" />
         <field name="arch" type="xml">
             <xpath expr="//field[@name='date_to']" position="after">
-                <field name="payroll_payment_gateway" />
+                <field name="payroll_payment_processor" />
             </xpath>
         </field>
     </record>
@@ -42,7 +42,7 @@
                     />
                 </xpath>
                 <xpath expr="//field[@name='contract_id']" position="before">
-                    <field name="payroll_payment_gateway" />
+                    <field name="payroll_payment_processor" />
                 </xpath>
             </data>
         </field>

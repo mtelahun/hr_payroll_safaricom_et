@@ -23,9 +23,9 @@ class HrPayslip(models.Model):
     )
 
     @api.model
-    def _get_payroll_payment_gateway(self):
+    def _get_payroll_payment_processor(self):
         """ Return the default payment method chosen by the company. """
-        return self.env.company.payroll_payment_gateway
+        return self.env.company.payroll_payment_processor
 
      # should be in-sync with field in res.company and hr.employee -> payroll_payment_processor
     payroll_payment_processor = fields.Selection(
@@ -33,7 +33,7 @@ class HrPayslip(models.Model):
                 ('none', _("None")),
                 ('manual', _("Manual")),
         ],
-        default=_get_payroll_payment_gateway,
+        default=_get_payroll_payment_processor,
         help="The payment processor to use when processing the payslip for payment.",
         index=True,
         tracking=True,
@@ -41,7 +41,7 @@ class HrPayslip(models.Model):
     
     @api.onchange("employee_id")
     def onchange_employee_id(self):
-        self.payroll_payment_processor = self.employee_id.payroll_payment_gateway
+        self.payroll_payment_processor = self.employee_id.payroll_payment_processor or self.env.company.payroll_payment_processor
 
     def action_payslip_confirm(self):
         if (
@@ -60,9 +60,9 @@ class HrPayslip(models.Model):
                     slip.number
                 )
                 continue
-            if slip.payroll_payment_gateway == 'manual':
+            if slip.payroll_payment_processor == 'manual':
                 continue
-            elif slip.payroll_payment_gateway == 'none':
+            elif slip.payroll_payment_processor == 'none':
                 slip.action_payslip_done()
 
 

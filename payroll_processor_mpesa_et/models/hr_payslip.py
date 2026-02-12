@@ -10,8 +10,8 @@ class HrPayslip(models.Model):
 
      _inherit = "hr.payslip"
 
-     # should be in-sync with field in res.company and hr.employee -> payroll_payment_gateway
-     payroll_payment_gateway = fields.Selection(
+     # should be in-sync with field in res.company and hr.employee -> payroll_payment_processor
+     payroll_payment_processor = fields.Selection(
           selection_add = [
                ('mpesa_et', "Safaricom M-PESA (ET)"),
           ]
@@ -52,7 +52,7 @@ class HrPayslip(models.Model):
      def action_payslip_payment(self):
                
           for slip in self:
-               if slip.payroll_payment_gateway == 'mpesa_et':
+               if slip.payroll_payment_processor == 'mpesa_et':
                     gw = self.env["payroll.gateway.mpesa_et"].search([("enabled", "=", True)]).browse()
                     if len(gw) == 0:
                          _logger.warning(
