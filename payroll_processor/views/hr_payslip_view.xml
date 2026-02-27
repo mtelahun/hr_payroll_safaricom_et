@@ -2,7 +2,7 @@
 <odoo>
 
     <record id="hr_payslip_view_tree_inherit" model="ir.ui.view">
-        <field name="name">hr.payslip.tree.inherit.payroll_gateway</field>
+        <field name="name">hr.payslip.tree.inherit.payroll_processor</field>
         <field name="model">hr.payslip</field>
         <field name="inherit_id" ref="payroll.hr_payslip_view_tree" />
         <field name="arch" type="xml">
@@ -13,7 +13,7 @@
     </record>
 
     <record id="hr_payslip_view_form_inherit" model="ir.ui.view">
-        <field name="name">hr.payslip.form.inherit.payroll_gateway</field>
+        <field name="name">hr.payslip.form.inherit.payroll_processor</field>
         <field name="model">hr.payslip</field>
         <field name="inherit_id" ref="payroll.hr_payslip_view_form" />
         <field name="arch" type="xml">

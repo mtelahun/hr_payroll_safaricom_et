@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <menuitem
-        id="payroll_menu_gateways"
+        id="payroll_menu_processors"
         name="Processors"
         parent="payroll.payroll_menu_configuration"
         sequence="100"

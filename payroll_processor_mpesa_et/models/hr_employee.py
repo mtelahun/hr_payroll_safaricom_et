@@ -13,3 +13,4 @@ class HrEmployee(models.Model):
     )
 
     mpesa_phone = fields.Text("M-PESA Telephone")
+

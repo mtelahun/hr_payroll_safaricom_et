@@ -53,10 +53,10 @@ class HrPayslip(models.Model):
                
           for slip in self:
                if slip.payroll_payment_processor == 'mpesa_et':
-                    gw = self.env["payroll.gateway.mpesa_et"].search([("enabled", "=", True)]).browse()
+                    gw = self.env["payroll.processor.mpesa_et"].search([("enabled", "=", True)]).browse()
                     if len(gw) == 0:
                          _logger.warning(
-                              "Unable to find an appropriate M-PESA gateway for payslip %s (%s)",
+                              "Unable to find an appropriate M-PESA processor for payslip %s (%s)",
                               slip.name,
                               slip.number
                          )
@@ -64,11 +64,12 @@ class HrPayslip(models.Model):
                     authorization = gw[0].get_authorization(gw[0].authenticate())
                     try:
                          res = gw[0].payout(authorization, slip.employee_id.mpesa_phone, slip.net_amount, slip.name)
-                    except:
+                    except Exception as e:
                          _logger.warning(
-                              "An error occurred during M-PESA payslip payment processing for %s (%s)",
+                              "An error occurred during M-PESA payslip payment processing for %s (%s): %s",
                               slip.name,
-                              slip.number
+                              slip.number,
+                              e.message
                          )
                     else:
                          res = gw[0].translate_payment_response(res)
